@@ -18,7 +18,7 @@ app.get('/createDocument', function (req, res) {
     const filename = guid + '.pdf'
     console.log("createDocument request " + guid);
 
-    const pdf = createDocument(req, res);
+    const pdf = createDocument(guid);
 
     let buffers = [];
     pdf.on('data', buffers.push.bind(buffers));
@@ -49,7 +49,7 @@ app.get('/createDocumentBare', function (req, res) {
     const filename = guid + '.pdf'
     console.log("createDocumentBare request " + guid);
 
-    const pdf = createDocument(req, res);
+    const pdf = createDocument(guid);
     let buffers = [];
     pdf.on('data', buffers.push.bind(buffers));
     pdf.on('end', () => {
