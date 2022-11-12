@@ -1,0 +1,14 @@
+{
+  "name": "leylek-ui",
+  "version": "1.0.0",
+  "description": "Leylek UI",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Erdem Emekligil",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^21.2.3"
+  }
+}
