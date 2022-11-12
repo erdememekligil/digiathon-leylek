@@ -19,7 +19,7 @@ contract Issuer {
         Status status;
     }
 
-    mapping(bytes32=>Document) hashesMapDocuments;
+    mapping(bytes32 => Document) hashesMapDocuments;
     mapping(bytes32=>bool) hashesMapBool;
     uint256 docCounter = 0;
     
@@ -34,13 +34,12 @@ contract Issuer {
 
         bytes32 hash = sha256For(_hashInput);
 
-        docCounter = docCounter ++;
+        docCounter ++;
         hashesMapDocuments[hash] = doc;
         hashesMapBool[hash] = true;
     }
 
-    function containsHash(string memory _hashInput) public view returns(bool){
-        require(docCounter > 0,"There is no document");
+    function containsHash(string memory _hashInput) checkDocExists public view returns(bool){
         bytes32 hash = sha256For(_hashInput);
         return hashesMapBool[hash];
     }
@@ -49,22 +48,16 @@ contract Issuer {
         return sha256(bytes(_hashInput));
     }
 
-    function getHolderAddress(string memory _hashInput) external view returns(address){
-        require(docCounter > 0,"There is no document registered!");
-        require(containsHash(_hashInput)==true, "Document is not found having this hash!");
+    function getHolderAddress(string memory _hashInput) checkHashContains(_hashInput) checkDocExists external view returns(address){
         bytes32 hash = sha256For(_hashInput);
         return hashesMapDocuments[hash].holder;
     }
-    function getIssuerAddress(string memory _hashInput) external view returns(address){
-        require(docCounter > 0,"There is no document registered!");
-        require(containsHash(_hashInput)==true, "Document is not found having this hash!");
+    function getIssuerAddress(string memory _hashInput) checkHashContains(_hashInput) checkDocExists external view returns(address){
         bytes32 hash = sha256For(_hashInput);
         return hashesMapDocuments[hash].issuer;
     }
     //getter/setter
-    function getStatus(string memory _hashInput) external view returns(Status){
-        require(docCounter > 0,"There is no document registered!");
-        require(containsHash(_hashInput)==true, "Document is not found having this hash!");
+    function getStatus(string memory _hashInput) checkHashContains(_hashInput) checkDocExists external view returns(Status){
         bytes32 hash = sha256For(_hashInput);
         return hashesMapDocuments[hash].status;
     }
@@ -72,31 +65,34 @@ contract Issuer {
         bytes32 hash = sha256For(_hashInput);
         hashesMapDocuments[hash].status = Status.Verified;
     }*/
-    function getExpiryDate(string memory _hashInput) external view returns(string memory){
-        require(docCounter > 0,"There is no document registered!");
-        require(containsHash(_hashInput)==true, "Document is not found having this hash!");
+    function getExpiryDate(string memory _hashInput) checkHashContains(_hashInput) checkDocExists external view returns(string memory){
         bytes32 hash = sha256For(_hashInput);
         return hashesMapDocuments[hash].expiryDate;
     }
-    function getDocumentType(string memory _hashInput) external view returns(string memory){
-        require(docCounter > 0,"There is no document registered!");
-        require(containsHash(_hashInput)==true, "Document is not found having this hash!");
+    function getDocumentType(string memory _hashInput) checkHashContains(_hashInput) checkDocExists external view returns(string memory){
         bytes32 hash = sha256For(_hashInput);
         return hashesMapDocuments[hash].documentType;
     }
 
-    function getValidStatus(string memory _hashInput) external view returns(bool){
-        require(docCounter > 0,"There is no document registered!");
-        require(containsHash(_hashInput)==true, "Document is not found having this hash!");
+    function getValidStatus(string memory _hashInput) checkHashContains(_hashInput) checkDocExists  external view returns(bool){
         bytes32 hash = sha256For(_hashInput);
         return hashesMapDocuments[hash].isValid;
     }
-    function setValidStatus(string memory _hashInput, bool _bool) external {
-        require(docCounter > 0,"There is no document registered!");
-        require(containsHash(_hashInput)==true, "Document is not found having this hash!");
+
+    function setValidStatus(string memory _hashInput, bool _bool) checkHashContains(_hashInput) checkDocExists external {
         bytes32 hash = sha256For(_hashInput);
         hashesMapDocuments[hash].isValid=_bool;
     }
+
+    modifier checkDocExists {
+        require(docCounter > 0,"There is no document registered!");
+        _;
+    }
+
+    modifier checkHashContains(string memory _hashInput) {
+        require(containsHash(_hashInput)==true, "Document is not found having this hash!");
+        _;
+    } 
 }
 
 contract Verifier {
@@ -112,3 +108,11 @@ contract Verifier {
     }
 
 }
+
+
+
+
+
+
+
+
