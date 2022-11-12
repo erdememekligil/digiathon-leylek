@@ -1,15 +1,59 @@
-<!DOCTYPE html>
-<html lang="tr">
+<!DOCTYPE HTML>
+<html>
 <head>
-    <meta charset="UTF-8">
-    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
-    <title>E-devlet cüzdan</title>
+    <title>Leylek</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <link rel="stylesheet" href="assets/css/eta-app.css" />
+    <link rel="import" href="assets/pages/welcome.html">
+    <link rel="import" href="assets/pages/documents.html">
+    <link rel="import" href="assets/pages/requests.html">
+    <link rel="import" href="assets/pages/approval-requests.html">
 </head>
 <body>
-<h1>E-devlet cüzdan uygulaması</h1>
-We are using Node.js <span id="node-version"></span>,
-Chromium <span id="chrome-version"></span>,
-and Electron <span id="electron-version"></span>.
+
+<!-- Sidebar -->
+<section id="sidebar">
+    <div class="inner">
+        <nav>
+            <ul>
+                <li><a id="welcome-menu" data-section="welcome" href="#">Ana Sayfa</a></li>
+                <li><a id="documents-menu" data-section="documents" href="#">Belgelerim</a></li>
+                <li><a id="requests-menu" data-section="requests" href="#">Taleplerim</a></li>
+                <li><a id="approval-requests-menu" data-section="approval-requests" href="#">Onay Bekleyenler</a></li>
+            </ul>
+        </nav>
+    </div>
+</section>
+
+<!-- Wrapper -->
+<div id="wrapper">
+</div>
+
+<!-- Footer -->
+<footer id="footer" class="wrapper style1-alt">
+    <div class="inner">
+        <ul class="menu">
+            <li>E-devlet cüzdan. Tüm hakları saklıdır.</li><li>Design: Leylek Team</li>
+        </ul>
+    </div>
+    <div class="version-info">
+        (Currently running Electron v<script>document.write(process.versions.electron)</script>)
+    </div>
+</footer>
+
+<!-- Scripts -->
+<script>window.$ = window.jQuery = require('./assets/js/jquery.min.js');</script>
+<script src="assets/js/jquery.scrollex.min.js"></script>
+<script src="assets/js/jquery.scrolly.min.js"></script>
+<script src="assets/js/skel.min.js"></script>
+<script src="assets/js/util.js"></script>
+<script src="assets/js/main.js"></script>
+<script>
+    require('./assets/js/menu')
+    require('./assets/js/ipc')
+    require('./assets/js/dialog')
+</script>
 </body>
 </html>
