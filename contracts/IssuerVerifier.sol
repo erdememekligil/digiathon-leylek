@@ -48,11 +48,11 @@ contract Issuer {
         return sha256(bytes(_hashInput));
     }
 
-    function getHolderAddress(string memory _hashInput) checkHashContains(_hashInput) checkDocExists external view returns(address){
+    function getHolderAddress(string memory _hashInput) checkStatus(_hashInput) checkHashContains(_hashInput) checkDocExists external view returns(address){
         bytes32 hash = sha256For(_hashInput);
         return hashesMapDocuments[hash].holder;
     }
-    function getIssuerAddress(string memory _hashInput) checkHashContains(_hashInput) checkDocExists external view returns(address){
+    function getIssuerAddress(string memory _hashInput) checkStatus(_hashInput) checkHashContains(_hashInput) checkDocExists external view returns(address){
         bytes32 hash = sha256For(_hashInput);
         return hashesMapDocuments[hash].issuer;
     }
@@ -65,11 +65,12 @@ contract Issuer {
         bytes32 hash = sha256For(_hashInput);
         hashesMapDocuments[hash].status = Status.Verified;
     }*/
-    function getExpiryDate(string memory _hashInput) checkHashContains(_hashInput) checkDocExists external view returns(string memory){
+    function getExpiryDate(string memory _hashInput) checkStatus(_hashInput) checkHashContains(_hashInput) checkDocExists external view returns(string memory){
         bytes32 hash = sha256For(_hashInput);
         return hashesMapDocuments[hash].expiryDate;
     }
-    function getDocumentType(string memory _hashInput) checkHashContains(_hashInput) checkDocExists external view returns(string memory){
+
+    function getDocumentType(string memory _hashInput) checkStatus(_hashInput) checkHashContains(_hashInput) checkDocExists external view returns(string memory){
         bytes32 hash = sha256For(_hashInput);
         return hashesMapDocuments[hash].documentType;
     }
@@ -93,6 +94,11 @@ contract Issuer {
         require(containsHash(_hashInput)==true, "Document is not found having this hash!");
         _;
     } 
+
+    modifier checkStatus(string memory _hashInput) {
+        require(this.getValidStatus(_hashInput)==true, "This document is not valid");
+        _;
+    }
 }
 
 contract Verifier {
@@ -108,6 +114,13 @@ contract Verifier {
     }
 
 }
+
+
+
+
+
+
+
 
 
 
