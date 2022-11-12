@@ -34,7 +34,7 @@ contract Issuer {
 
         bytes32 hash = sha256For(_hashInput);
 
-        docCounter = docCounter + 1;
+        docCounter = docCounter ++;
         hashesMapDocuments[hash] = doc;
         hashesMapBool[hash] = true;
     }
@@ -112,4 +112,3 @@ contract Verifier {
     }
 
 }
-
