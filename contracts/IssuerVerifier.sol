@@ -103,17 +103,38 @@ contract Issuer {
 
 contract Verifier {
     Issuer issuer;
+    Holder holder;
 
-    constructor(address _IssuerContract) {
+    constructor(address _IssuerContract, address _HolderContract) {
         issuer = Issuer(_IssuerContract);
+        holder = Holder(_HolderContract);
     }
 
     function verifyDocument(string memory _hash) external view returns(bool) {
         //issuer.setStatus(_hash,Verified);
         return issuer.containsHash(_hash);
     }
+    function demandDocument(address _holder, string[] memory _documentList) external{
+        holder.demandDocument(_holder, _documentList);
+    }
 
 }
+
+contract Holder{
+
+    mapping(address=>string[]) documentDemand;
+
+    function demandDocument(address _holder, string[] memory _documentList) external {
+        documentDemand[_holder]=_documentList;
+    }
+    function getDocumentList() external view returns(string[] memory){
+        return documentDemand[msg.sender];
+    }
+
+}
+
+
+
 
 
 
