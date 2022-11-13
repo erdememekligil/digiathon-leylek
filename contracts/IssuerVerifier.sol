@@ -2,13 +2,6 @@
 pragma solidity ^0.8.0;
 
 contract Issuer {
-    
-    enum Status {
-        Demanded,
-        Hashed, 
-        Written, 
-        Verified
-    }
 
     struct Document {
         address holder;
@@ -16,7 +9,6 @@ contract Issuer {
         string documentType;
         string expiryDate;
         bool isValid;
-        Status status;
     }
 
     mapping(bytes32 => Document) hashesMapDocuments;
@@ -29,7 +21,6 @@ contract Issuer {
         doc.issuer = msg.sender;
         doc.documentType = _docType;
         doc.expiryDate = _expDate;
-        doc.status = Status.Written;
         doc.isValid = true;
 
         bytes32 hash = sha256For(_hashInput);
@@ -57,14 +48,6 @@ contract Issuer {
         return hashesMapDocuments[hash].issuer;
     }
     //getter/setter
-    function getStatus(string memory _hashInput) checkHashContains(_hashInput) checkDocExists external view returns(Status){
-        bytes32 hash = sha256For(_hashInput);
-        return hashesMapDocuments[hash].status;
-    }
-    /*function setStatus(string memory _hashInput) external pure {
-        bytes32 hash = sha256For(_hashInput);
-        hashesMapDocuments[hash].status = Status.Verified;
-    }*/
     function getExpiryDate(string memory _hashInput) checkStatus(_hashInput) checkHashContains(_hashInput) checkDocExists external view returns(string memory){
         bytes32 hash = sha256For(_hashInput);
         return hashesMapDocuments[hash].expiryDate;
@@ -80,9 +63,13 @@ contract Issuer {
         return hashesMapDocuments[hash].isValid;
     }
 
-    function setValidStatus(string memory _hashInput, bool _bool) checkHashContains(_hashInput) checkDocExists external {
+    function changeValidStatus(string memory _hashInput, bool _bool) checkHashContains(_hashInput) checkDocExists external {
         bytes32 hash = sha256For(_hashInput);
-        hashesMapDocuments[hash].isValid=_bool;
+        if(hashesMapDocuments[hash].isValid == true) {
+            hashesMapDocuments[hash].isValid = false;
+        } else if(hashesMapDocuments[hash].isValid == false) {
+            hashesMapDocuments[hash].isValid = true;
+        }
     }
 
     modifier checkDocExists {
@@ -132,16 +119,6 @@ contract Holder{
     }
 
 }
-
-
-
-
-
-
-
-
-
-
 
 
 
