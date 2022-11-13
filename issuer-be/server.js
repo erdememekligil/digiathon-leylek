@@ -10,6 +10,7 @@ const requestLogs = [];
 const documentTypes = ["Askerlik Durumu", "SGK Hizmet Dökümü", "Sabıka Kaydı"];
 
 app.get('/status', function (req, res) {
+    console.log("status check");
     res.send(requestLogs);
 })
 
@@ -25,6 +26,9 @@ app.get('/createDocument', function (req, res) {
     pdf.on('end', () => {
         let pdfData = Buffer.concat(buffers);
         let b64pdf = pdfData.toString('base64');
+
+        // TODO hash b64pdf and put to chain
+
         const message = encdec.encryptData(b64pdf, keys.holder.publicKey, keys.issuer.secretKey);
 
         // let encodedDecodedMessage = JSON.parse(JSON.stringify(message));
