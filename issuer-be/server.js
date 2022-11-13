@@ -33,8 +33,8 @@ app.get('/createDocument', function (req, res) {
     pdf.on('end', () => {
         let pdfData = Buffer.concat(buffers);
         let b64pdf = pdfData.toString('base64');
-        let hashOfpdf = hash(b64pdf);
-        console.log(hashOfPdf);
+        let hashOfPdf = hash(b64pdf);
+        console.log("hash of " + guid + " is " + hashOfPdf);
         // TODO hash b64pdf and put to chain
 
         const message = encdec.encryptData(b64pdf, keys.holder.publicKey, keys.issuer.secretKey);
