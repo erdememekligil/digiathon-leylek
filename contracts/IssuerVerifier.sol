@@ -2,7 +2,7 @@
 pragma solidity ^0.8.0;
 
 contract Issuer {
-
+    //Doküman parametrelerini içeren struct
     struct Document {
         address holder;
         address issuer;

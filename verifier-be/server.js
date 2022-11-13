@@ -30,7 +30,7 @@ app.post('/requestDocuments', function (req, res) {
 app.post('/postDocuments', function (req, res) {
     const guid = 123;  // get guid from request TODO
     console.log("postDocuments request " + guid);
-
+    status_db[guid] = {"guid":guid, "status": "requested", "documents": documents}
     // verify and update status_db
     // TODO
 })
