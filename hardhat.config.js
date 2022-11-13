@@ -2,7 +2,7 @@
 require("@nomiclabs/hardhat-waffle");
 require('dotenv').config()
 
-const DIGI_PRIVATE_KEY = process.env.DIGI_WALLET_PRIVATE_KEY;
+const DIGI_PRIVATE_KEY = process.env.DIGI0_WALLET_PRIVATE_KEY;
 const PRIVATE_KEY = process.env.AVAX_WALLET_PRIVATE_KEY;
 
 
