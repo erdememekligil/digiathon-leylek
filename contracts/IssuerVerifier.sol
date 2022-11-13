@@ -63,7 +63,7 @@ contract Issuer {
         return hashesMapDocuments[hash].isValid;
     }
 
-    function changeValidStatus(string memory _hashInput, bool _bool) checkHashContains(_hashInput) checkDocExists external {
+    function changeValidStatus(string memory _hashInput) checkHashContains(_hashInput) checkDocExists external {
         bytes32 hash = sha256For(_hashInput);
         if(hashesMapDocuments[hash].isValid == true) {
             hashesMapDocuments[hash].isValid = false;
