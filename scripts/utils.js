@@ -77,6 +77,14 @@ module.exports = {
         */
     },
 
+    getDocList : async function ()
+    {
+        const holder = await ethers.getContractAt("Holder",config.adresses.holder.contract);
+        let stringArr = await holder.functions.getDocumentList();
+        console.log("get documents result:",stringArr);
+    
+    },
+
     setHash : async function 
     (
         _documentHash
