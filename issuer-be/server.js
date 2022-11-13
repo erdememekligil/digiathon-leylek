@@ -3,7 +3,9 @@ const app = express();
 const uuid = require('uuid');
 const PDFDocument = require('pdfkit');
 const keys = require("./keys.js");
-const encdec = require("./encdec");
+const encdec = require("./encdec.js");
+const { createHash } = require('crypto');
+
 
 
 const requestLogs = [];
@@ -14,6 +16,10 @@ app.get('/status', function (req, res) {
     res.send(requestLogs);
 })
 
+function hash(pdfstr) {
+    return createHash('sha256').update(pdfstr).digest('hex');
+  }
+
 app.get('/createDocument', function (req, res) {
     const guid = uuid.v4();
     const filename = guid + '.pdf'
@@ -21,12 +27,14 @@ app.get('/createDocument', function (req, res) {
 
     const pdf = createDocument(guid);
 
+
     let buffers = [];
     pdf.on('data', buffers.push.bind(buffers));
     pdf.on('end', () => {
         let pdfData = Buffer.concat(buffers);
         let b64pdf = pdfData.toString('base64');
-
+        let hashOfpdf = hash(b64pdf);
+        console.log(hashOfPdf);
         // TODO hash b64pdf and put to chain
 
         const message = encdec.encryptData(b64pdf, keys.holder.publicKey, keys.issuer.secretKey);
