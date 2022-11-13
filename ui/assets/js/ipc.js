@@ -11,6 +11,9 @@ function(n) {
       sendCloseSecondWindowEvent: function() {
         ipcRenderer.send('close-second-window', 'an-argument')
       },
+      sendRequestFormSubmitEvent: function(holderAddress, docs) {
+        ipcRenderer.send('submitRequestForm', holderAddress);
+      },
 
       init: function() {
         $('#open-secondwindow-button').click( function () {
@@ -21,6 +24,13 @@ function(n) {
           ipc.messaging.sendCloseSecondWindowEvent()
         })
 
+        $('#document-request-form').submit(function (event) {
+            console.log("form submit", event);
+            event.preventDefault();
+            let holderAddress = $('#request-from').val();
+            let docs = $('#request-docs').children().each( function(){console.log(this.innerText)});
+            ipc.messaging.sendRequestFormSubmitEvent(holderAddress, docs);
+        })
       }
     };
 

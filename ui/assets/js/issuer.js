@@ -15,7 +15,7 @@ function poll() {
         //res.setEncoding('utf8');
         res.on('data', function (chunk) {
             let d = JSON.parse(chunk);
-            console.log('BODY: ' + d.length + " " + chunk);
+            //console.log('BODY: ' + d.length + " " + chunk);
             let logDiv = $("#issuer-logs");
             logDiv.empty();
             for (let i = 0; i < d.length; i++) {
@@ -29,7 +29,7 @@ function poll() {
     <div>${new Date(row["time"]).toString()}</div>
 </section>`;
                 logDiv.append(single_log);
-                console.log("appended row", single_log)
+                //console.log("appended row", single_log)
             }
         });
 
