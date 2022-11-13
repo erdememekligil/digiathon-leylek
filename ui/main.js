@@ -2,6 +2,11 @@ const {app, ipcMain, BrowserWindow } = require('electron')
 
 var path = require('path')
 require('./dialog/dialog')
+const encdec = require("./cipher/encdec");
+const keys = require("./cipher/keys");
+const fs = require("fs");
+const http = require("http");
+const {createHash} = require("crypto");
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -96,3 +101,51 @@ app.on('activate', function () {
 ipcMain.on('submitRequestForm', function(event, data) {
     console.log(data);
 });
+
+ipcMain.on('approveRequest', function(event, data) {
+    console.log(data);
+
+    for (let i = 0; i < 1; i++) {
+
+        var options = {
+            host: "localhost",
+            port: 8080,
+            path: '/createDocument'
+        };
+
+        http.get(options, function (res) {
+            //res.setEncoding('utf8');
+            res.on('data', function (chunk) {
+                let d = JSON.parse(chunk);
+                console.log('BODY: ' + d + " " + chunk);
+                let encrypted = parseEncodedDecodedMessage(d);
+                console.log("response " + encrypted);
+
+                let decrypted = encdec.decryptData(encrypted, keys.holder.secretKey, keys.issuer.publicKey);
+                let hashOfPdf = hash(decrypted);
+                let pdf = Buffer.from(decrypted, 'base64');
+
+                fs.writeFileSync(`files/${hashOfPdf}.pdf`, pdf);
+            });
+
+        }).end();
+    }
+});
+
+
+function parseEncodedDecodedMessage(encodedDecodedMessage){
+
+    let c = new Uint8Array(Object.keys(encodedDecodedMessage["cipher_text"]).length);
+    for (var i = 0; i < c.length; i++) {
+        c[i] = encodedDecodedMessage["cipher_text"][i];
+    }
+    let o = new Uint8Array(Object.keys(encodedDecodedMessage["one_time_code"]).length);
+    for (var i = 0; i < o.length; i++) {
+        o[i] = encodedDecodedMessage["one_time_code"][i];
+    }
+    return {"cipher_text": c, "one_time_code": o};
+}
+
+function hash(pdfstr) {
+    return createHash('sha256').update(pdfstr).digest('hex');
+}
