@@ -3,9 +3,37 @@
   <div class="inner">
     <h1>Leylek</h1>
     <h3>Blokchain tabanlı belge yönetim aracı.</h3>
+    <div id="idInputForm">
+      <label for="idInput">ID: </label><input id="idInput" type="text">
+      <input type="submit" value="Giriş yap" onclick="setID()">
+    </div>
     <ul class="actions">
       <li><a href="#one" id="learn-more-button" class="button scrolly">Bilgi al</a></li>
     </ul>
   </div>
+  <script type="application/javascript">
+    function setID () {
+      let address = $('#idInput').val();
+      if (address.endsWith("1"))
+      {
+        $('#documents-menu').hide();
+        $('#approval-requests-menu').hide();
+        $('#issuer-menu').hide();
+      }
+      else if (address.endsWith("2"))
+      {
+        $('#requests-menu').hide();
+        $('#issuer-menu').hide();
+      }
+      if (address.endsWith("3"))
+      {
+        $('#documents-menu').hide();
+        $('#approval-requests-menu').hide();
+        $('#requests-menu').hide();
+      }
+      $('#userId').text(address);
+      $('#idInputForm').hide();
+    }
+  </script>
 </section>
 </template>

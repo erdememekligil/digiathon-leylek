@@ -19,6 +19,8 @@ window.appRequests = window.appRequests || {},
 
             approveEvent: function() {
                 console.log("approved");
+                $('#iconSpan1').removeClass("fa-clock-o");
+                $('#iconSpan1').addClass("fa-check");
                 ipcRenderer.send('approveRequest', 'an-argument');
             },
 

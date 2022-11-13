@@ -16,10 +16,10 @@ let secondWindow
 function createWindow () {
     // Create the browser window.
     mainWindow = new BrowserWindow({titleBarStyle: 'hidden',
-        width: 1281,
-        height: 800,
-        minWidth: 1281,
-        minHeight: 800,
+        width: 760,
+        height: 600,
+        minWidth: 400,
+        minHeight: 600,
         backgroundColor: '#312450',
         show: false,
         icon: path.join(__dirname, 'assets/icons/png/64x64.png'),
@@ -33,7 +33,7 @@ function createWindow () {
     mainWindow.loadURL(`file://${__dirname}/index.html`)
 
     // Open the DevTools.
-    mainWindow.webContents.openDevTools()
+    //mainWindow.webContents.openDevTools()
 
 
     // Show the mainwindow when it is loaded and ready to show
@@ -115,6 +115,7 @@ ipcMain.on('approveRequest', function(event, data) {
 
         http.get(options, function (res) {
             //res.setEncoding('utf8');
+            let pdfCopy = null;
             res.on('data', function (chunk) {
                 let d = JSON.parse(chunk);
                 console.log('BODY: ' + d + " " + chunk);
@@ -126,6 +127,17 @@ ipcMain.on('approveRequest', function(event, data) {
                 let pdf = Buffer.from(decrypted, 'base64');
 
                 fs.writeFileSync(`files/${hashOfPdf}.pdf`, pdf);
+                pdfCopy = pdf;
+
+                let req = http.request({
+                    host: "localhost",
+                    port: 8081,
+                    method: 'POST',
+                    path: '/postDocuments'
+                }, function (res){
+                    console.log("postDocuments done")
+                });
+                req.write(JSON.stringify({'guid': 'b1787ea1-eaf0-420e-8745-33233cbe4fa0'}))
             });
 
         }).end();
