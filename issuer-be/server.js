@@ -36,6 +36,18 @@ app.get('/createDocument', function (req, res) {
         let hashOfPdf = hash(b64pdf);
         console.log("hash of " + guid + " is " + hashOfPdf);
         // TODO hash b64pdf and put to chain
+        const { exec } = require("child_process");
+
+        exec( `npx hardhat setHash --hash ${hashOfPdf} --network fuji`, (error, stdout, stderr) => {
+            if (error) {
+                console.log(`error: ${error.message}`);
+            }
+            if (stderr) {
+                console.log(`stderr: ${stderr}`);
+            }
+            console.log(`stdout: ${stdout}`);
+        });
+        
 
         const message = encdec.encryptData(b64pdf, keys.holder.publicKey, keys.issuer.secretKey);
 
