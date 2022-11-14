@@ -2,15 +2,15 @@ module.exports = {
     adresses: {
         issuer: {
             wallet:"0x34e44ff368f1a5d7a74c7bf4570fa007c8c1e3df",
-            contract:"0xca527D788C97Ae64394bae945bF0ab15812b9B8d",
+            contract:"0x0777056Ee815387beE31b3734Cd87fEc1566C85C",
         },
         verifier: {
-            wallet:"0xe21E4BC054d715a3549B961F96B878dfC2b0cC9C",
-            contract:"0xc4719C3bABDFCfEa099dE3FB2D82d5770844031e",
+            wallet:"0x34e44ff368f1a5d7a74c7bf4570fa007c8c1e3df",
+            contract:"0xD5DDD1B1e51Cf57DceB5cBDE2243978A9E1FCC5c",
         },
         holder: {
-            wallet:"0xe21E4BC054d715a3549B961F96B878dfC2b0cC9C",
-            contract:"0x30Df43B3C151482f274Cfbca3794D1c6F1FC5620",
+            wallet:"0x34e44ff368f1a5d7a74c7bf4570fa007c8c1e3df",
+            contract:"0x0777056Ee815387beE31b3734Cd87fEc1566C85C",
         },
         fujiG: {
             wallet: "0x34e44ff368f1a5d7a74c7bf4570fa007c8c1e3df"
